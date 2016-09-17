@@ -1,9 +1,11 @@
 var queries = require('../src/queries');
+var url = require('url');
 
 var pieces = [];
 
 function submit() {
-	var gamestateid = 0 // FIXME: parse URL for id 
+	var params = url.query(window.location.href,true,false);
+	var gamestateid = params.id; 
 	for (i=0; i<pieces.length;i++) {
 		var count = 0;
 		var piece = pieces[i];
