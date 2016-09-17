@@ -4,25 +4,149 @@
 <head>
 <meta charset="UTF-8">
     <title>Game ID #</title>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <script src="script.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/mainstylesheet.css">
 </head>
+<script>
+var svg;
+
+function drawBoard(){
+    var selectedSize = document.getElementById("sel1");
+    var size = selectedSize.options[selectedSize.selectedIndex].value;
+    var margin = {top: 20, right: 20, bottom: 20, left: 20},
+    width = 900 - margin.left - margin.right,
+    height = 900 - margin.top - margin.bottom;
+    
+    d3.select("svg").remove();
+    
+    svg = d3.select("#checkboard-canvas")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .attr("class", "background-yellow")
+        .append("g")
+        .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
+            
+    //For each column
+    for (i = 0; i<size; i++) {
+        //Draw a row of the chessboard.
+        if (i%2 ==0) {
+            for (j = 0; j<size; j++) {
+            
+                var xid = j.toString();
+                var yid = i.toString();
+                var squareId = "c" + xid.concat("-", yid);
+
+                if (j%2 == 0) {
+                    var rectangle = svg.append("rect")
+                            .attr("class", "white-square")
+                            .attr("id", squareId)
+                            .attr("x", (j*(width/size)))
+                            .attr("y", (i*(width/size)))
+                            .attr("width", width/size)
+                            .attr("height", height/size)
+                            .attr("fill", "white")
+                            .attr("fill-opacity", 1);
+                }
+                else {
+                    var rectangle = svg.append("rect")
+                            .attr("class", "black-square")
+                            .attr("id", squareId)
+                            .attr("x", (j*(width/size)))
+                            .attr("y", (i*(width/size)))
+                            .attr("width", width/size)
+                            .attr("height", height/size)
+                            .attr("fill", "black")
+                            .attr("fill-opacity", 1);
+                }
+            }
+        }
+        else {
+            for (j = 0; j<size; j++) {
+                var xid = j.toString();
+                var yid = i.toString();
+                var squareId = "c" + xid.concat("-", yid);
+                if (j%2 == 0) {
+                    var rectangle = svg.append("rect")
+                            .attr("class", "black-square")
+                            .attr("id", squareId)
+                            .attr("x", (j*(width/size)))
+                            .attr("y", (i*(width/size)))
+                            .attr("width", width/size)
+                            .attr("height", height/size)
+                            .attr("fill", "black")
+                            .attr("fill-opacity", 1);
+                }
+                else {
+                    var rectangle = svg.append("rect")
+                                .attr("class", "white-square")
+                                .attr("id", squareId)
+                                .attr("x", (j*(width/size)))
+                                .attr("y", (i*(width/size)))
+                                .attr("width", width/size)
+                                .attr("height", height/size)
+                                .attr("fill", "white")
+                                .attr("fill-opacity", 1);
+                }
+            }
+        }
+    }
+}
+
+function drawPiece(xPos, yPos, pieceType) {
+    var piecelist = '{"pieceTypes":[' + '{"WhiteKing":"&#9812;"},' + 
+    '{"WhiteQueen":"&#9813;"},' + '{"WhiteRook":"&#9814;"},' + 
+    '{"WhiteBishop":"&#9815;"},' + '{"WhiteKnight":"&#9816;"},' + 
+    '{"WhitePawn":"&#9817;"},' + '{"BlackKing":"&#9818;"},' + 
+    '{"BlackQueen":"&#9819;"},' + '{"BlackRook":"&#9820;"},' + 
+    '{"BlackBishop":"&#9821;"},' + '{"BlackKnight":"&#9822;"},' + 
+    '{"BlackPawn":"&#9823;"}]}';
+    
+    var piecedata = JSON.parse(piecelist);
+    
+    for (var i = 0; i<13; i++) {
+        for (var key in piecedata.pieceTypes[i]) {
+            if (key == pieceType) {
+                var unicode = piecedata.pieceTypes[i][key];
+                console.log(unicode);
+                var squareIdInfo = xPos.concat("-", yPos);
+                var squareInfo = "#c" + squareIdInfo;
+                var squareXpos = d3.select(squareInfo).attr("x");
+                var squareYpos = d3.select(squareInfo).attr("y");
+                var squareWidth = d3.select(squareInfo).attr("width");
+                var squareHeight = d3.select(squareInfo).attr("height");
+                var boardSquare = d3.select("#checkboard-canvas");
+                console.log(squareXpos);
+                console.log(squareYpos);
+                var rectangle = svg.append("text")
+                            .attr("x", squareXpos)
+                            .attr("y", squareYpos)
+                            .attr("font-size", "100px")
+                            .text(unicode);
+            }
+        }
+    }
+}
+</script>
 
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
           <div class="navbar-header">
             <button class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse">
               <span class="sr-only"> Toggle navigation </span>
               <span class "icon-bar"></span>
             </button>
-          </div>
           <div id="navbar" class="collapse navbar-collapse navHeaderCollapse">
+          </div>
             <ul class="navbar-right nav navbar-nav">
-              <li><a href="home.html">Home</a></li>
+              <li><a href="index.html">Home</a></li>
               <li id="current"><a href="game.html">Game</a></li>
             </ul>
           </div>
@@ -32,14 +156,36 @@
 	<div class="container-fluid">
       <div class="container">
         <div class="row">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <p> Gameboard to go here dynamically </p>
-          </div>
+        <br><br><br><br>
+                <!--<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 centered chessboard">
+                </div>-->
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="form-group">
+                      <label for="sel1">Select the size of the board:</label>
+                      <select class="form-control" id="sel1">
+                        <option value = "4">4x4</option>
+                        <option value = "5">5x5</option>
+                        <option value = "6">6x6</option>
+                        <option value = "7">7x7</option>
+                        <option value = "8">8x8</option>
+                        <option value = "9">9x9</option>
+                        <option value = "10">10x10</option>
+                        <option value = "11">11x11</option>
+                        <option value = "12">12x12</option>
+                        <option value = "13">13x13</option>
+                        <option value = "14">14x14</option>
+                        <option value = "15">15x15</option>
+                      </select>
+                      <br>
+                      <input type="submit" class="btn btn-primary" value="Submit" onclick = "drawBoard();">
+                      <input type="submit" class="btn btn-primary" value="DrawPiece" onclick = "drawPiece('1','3','WhiteKing');">
+                    </div>
+                </div>
+                <div id = "checkboard-canvas" class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                </div>
+                <br>
         </div>
       </div>
     </div>
-
-<div class="jumbotron"> 
-<p></p>
 </body>
 </html>
