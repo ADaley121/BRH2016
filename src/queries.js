@@ -57,12 +57,18 @@ exports.create_piece = function(gid,ptid,x,y,plid,callback) {
   });
 }
 
-var get_gamestate = function(callback) {
+exports.get_gamestate = function(gid, callback) {
   // poll gamestate
+  con.query('SELECT * FROM gamestate WHERE id = ?', [gid], function(err, gamestate) {
+    callback(err, gamestate);
+  });
 }
 
-var get_pieces = function(callback) {
+exports.get_pieces = function(gid, callback) {
   // get the pieces corresponding to gid
+  con.query('SELECT * FROM piece WHERE gamestateid = ?', [gid], function(err, pieces) {
+    callback(err, pieces);
+  });
 }
 
 exports.kill_piece = function(piece,callback) {
