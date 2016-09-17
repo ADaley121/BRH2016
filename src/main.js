@@ -1,5 +1,6 @@
 // var piecetype = require('./piecetype');
 var mysql = require("mysql");
+var queries = require("./queries");
 var certs = require("./certs");
 
 var con = mysql.createConnection({
@@ -56,6 +57,11 @@ con.query('INSERT INTO gamestate SET ?', gamestate, function(gameerr,game) {
     });
   });   
 });
+
+queries.get_gamestate(function(err, gamestate) {
+  console.log(err);
+  console.log(gamestate);
+})
 
 
 

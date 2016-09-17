@@ -22,8 +22,11 @@ var create_piece = function(ptid,x,y,plid) {
   // make piece using gid
 }
 
-var get_gamestate = function(callback) {
+exports.get_gamestate = function(callback) {
   // poll gamestate
+  con.query('SELECT * FROM gamestate WHERE id = ${gid}', function(err, gamestate) {
+    callback(err, gamestate)
+  })
 }
 
 var get_pieces = function(callback) {
@@ -34,7 +37,7 @@ var kill_piece = function(pid,callback) {
   // mark alive to 0 in pieces table for pid
 }
 
-var make_move = function(pid, x, y, isWinning callback) {
+var make_move = function(pid, x, y, isWinning, callback) {
   // update piece in database to new square
   // update turn marker in gamestate with gid and isWinning if it is winning move
 }
