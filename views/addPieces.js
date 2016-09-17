@@ -4,8 +4,8 @@ var pieces = [];
 
 function submit() {
 	var completedPieceTypes = [];
+	var count = 0;
 	for (i=0; i<pieces.length;i++) {
-		var count = 0;
 		var piece = pieces[i];
 		queries.create_piecetype(
 			piece["n"],
@@ -23,7 +23,6 @@ function submit() {
 				completedPieceTypes.push(piecetype);
 
 				if count == pieces.length {
-					localStorage.setItem('_pieceTypes',completedPieceTypes);
 					location.href = 'initial-position.html';
 				}
 			}
