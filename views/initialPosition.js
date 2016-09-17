@@ -15,9 +15,8 @@ function submit() {
 			count = count + 1;
 			if count == pieces.length {
 				queries.create_game(gsid, 1, function(game) {
-					console.log(game);
+					location.href = "game.html?id=" + game.id + '&playerid=1';
 				});
-				location.href = "game.html";
 			}
 		})
 	}
