@@ -60,14 +60,16 @@ exports.create_piece = function(gid,ptid,x,y,plid,callback) {
 exports.get_gamestate = function(gid, callback) {
   // poll gamestate
   con.query('SELECT * FROM gamestate WHERE id = ?', [gid], function(err, gamestate) {
-    callback(err, gamestate);
+    if (err) throw err;
+    callback(gamestate);
   });
 }
 
 exports.get_pieces = function(gid, callback) {
   // get the pieces corresponding to gid
   con.query('SELECT * FROM piece WHERE gamestateid = ?', [gid], function(err, pieces) {
-    callback(err, pieces);
+    if (err) throw err;
+    callback(pieces);
   });
 }
 
