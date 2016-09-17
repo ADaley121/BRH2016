@@ -6,8 +6,8 @@ var pieces = [];
 function submit() {
 	var params = url.query(window.location.href,true,false);
 	var gamestateid = params.id; 
+	var count = 0;
 	for (i=0; i<pieces.length;i++) {
-		var count = 0;
 		var piece = pieces[i];
 		queries.create_piecetype(
 			gamestateid,
