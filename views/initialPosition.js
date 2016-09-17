@@ -1,7 +1,9 @@
 var queries = require('../src/queries.js');
+var url = require('url');
 
 //get the game id from url
-gsid = 0;
+var params = url.query(window.location.href,true,false);
+var gsid = params.id; 
 
 var pieces = [];
 
