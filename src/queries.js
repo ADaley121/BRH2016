@@ -93,3 +93,27 @@ exports.make_move = function(gamestate, piece, x, y, isWinning, callback) {
   });
 }
 
+exports.create_game = function (gid,plid,callback) {
+  game = { player1_id: plid,
+           gamestate_id: gid };
+  con.query('INSERT INTO game SET ?', game, function(gerr,g) {
+    if(gerr) throw gerr;
+    game.id = g.insertId;
+    callback(game); 
+  });
+}
+
+exports.get_game = function(gameid,callback) {
+  con.query('SELECT * FROM game WHERE id = ?', [gameid], function(gerr,g) {
+    if (gerr) throw gerr;
+    callback(g);
+  });
+}
+
+exports.join_game = function(gameid,plid,callback) {
+  con.query('UPDATE game SET player2_id = ? WHERE id = ?', [plid,gameid], function(gerr,g) {
+    if (gerr) callback(false);
+    else callback(true);
+  });
+}
+
