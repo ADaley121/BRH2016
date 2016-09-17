@@ -3,11 +3,12 @@ var queries = require('../src/queries');
 var pieces = [];
 
 function submit() {
-	var completedPieceTypes = [];
 	var count = 0;
+	var gamestateid = 0 // FIXME: parse URL for id 
 	for (i=0; i<pieces.length;i++) {
 		var piece = pieces[i];
 		queries.create_piecetype(
+			gamestateid,
 			piece["n"],
 			piece["nw"],
 			piece["w"],
@@ -20,10 +21,8 @@ function submit() {
 			piece["isKing"],
 			function(piecetype) {
 				count = count + 1;
-				completedPieceTypes.push(piecetype);
-
 				if count == pieces.length {
-					location.href = 'initial-position.html';
+					location.href = 'initial-position.html?id=' + gamestateid;
 				}
 			}
 		)

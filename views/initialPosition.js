@@ -7,13 +7,10 @@ var pieces = [];
 
 function submit() {
 	var count = 0;
-	var completedPieces = [];
 	for (i=0;i<pieces.length;i++) {
 		var p = pieces[i];
 		queries.create_piece(gsid, p["ptid"], p["x"], p["y"], p["plid"], function(piece) {
 			count = count + 1;
-			completedPieces.push(piece);
-
 			if count == pieces.length {
 				queries.create_game(gsid, 1, function(game) {
 					console.log(game);
