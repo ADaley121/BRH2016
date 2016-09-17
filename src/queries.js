@@ -12,7 +12,7 @@ var con = mysql.createConnection({
   database: certs.database
 });
 
-var create_gamestate = function(board_length,board_height,callback) {
+exports.create_gamestate = function(board_length,board_height,callback) {
   // make gamestate for boardsize, update gid, and give gamestate through callback
   var gamestate = { board_length: board_length,
                     board_height: board_height,
@@ -25,7 +25,7 @@ var create_gamestate = function(board_length,board_height,callback) {
   });
 }
 
-var create_piecetype = function(n,nw,w,sw,s,se,e,ne,icon,isKing,callback) {
+exports.create_piecetype = function(n,nw,w,sw,s,se,e,ne,icon,isKing,callback) {
   // make piecetype and give pt through callback
   var piecetype = { movement_n: n, 
                     movement_nw: nw,
@@ -44,7 +44,7 @@ var create_piecetype = function(n,nw,w,sw,s,se,e,ne,icon,isKing,callback) {
   });
 }
 
-var create_piece = function(ptid,x,y,plid,callback) {
+exports.create_piece = function(ptid,x,y,plid,callback) {
   // make piece using gid and give piece through callback
   var piece = { gamestateid: gid,
                 piecetypeid: ptid,
@@ -67,7 +67,7 @@ var get_pieces = function(callback) {
   // get the pieces corresponding to gid
 }
 
-var kill_piece = function(pid,callback) {
+exports.kill_piece = function(pid,callback) {
   // mark alive to 0 in pieces table for pid
   con.query('UPDATE piece SET alive = 0 Where ID = ?', [pid], function (err, res) {
     if (err) throw err;
@@ -75,7 +75,7 @@ var kill_piece = function(pid,callback) {
   });
 }
 
-var make_move = function(pid, x, y, isWinning, callback) {
+exports.make_move = function(pid, x, y, isWinning, callback) {
   // update piece in database to new square
   // update turn marker in gamestate with gid and isWinning if it is winning move
   con.query('UPDATE piece SET x_pos = ?, y_pos = ? Where ID = ?', [x, y, pid], function (err, res) {
