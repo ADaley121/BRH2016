@@ -13,7 +13,7 @@ function submit() {
 		var p = pieces[i];
 		queries.create_piece(gsid, p["ptid"], p["x"], p["y"], p["plid"], function(piece) {
 			count = count + 1;
-			if count == pieces.length {
+			if (count == pieces.length) {
 				queries.create_game(gsid, 1, function(game) {
 					location.href = "game.html?id=" + game.id + '&playerid=1';
 				});
@@ -35,7 +35,7 @@ function addPiece(ptid, ownPiece, x, y) {
 function removePiece(x, y) {
 	for (i=0;i<pieces.length;i++) {
 		var p = pieces[i];
-		if p["x"] == x && p["y"] == y {
+		if (p["x"] == x) && (p["y"] == y) {
 			pieces.splice(i,1);
 			break;
 		}
